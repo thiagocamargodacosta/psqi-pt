@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/thiagocamargodacosta/psqi-pt/reporting"
 )
@@ -34,7 +35,7 @@ func WriteOutputCSV(outputFilename string, reports []reporting.Report) error {
 		records[i+1] = []string{r.Date, r.Email, r.Component1, r.Component2, r.Component3, r.Component4, r.Component5, r.Component6, r.Component7, r.GlobalValue}
 	}
 
-	file, err := os.Create(outputFilename)
+	file, err := os.Create(filepath.Clean(outputFilename))
 
 	if err != nil {
 		log.Fatalf("unable to create output file", err)
@@ -42,7 +43,10 @@ func WriteOutputCSV(outputFilename string, reports []reporting.Report) error {
 	defer file.Close()
 
 	w := csv.NewWriter(file)
-	w.WriteAll(records)
+
+	if err = w.WriteAll(records); err != nil {
+		log.Fatalln(err)
+	}
 
 	if err := w.Error(); err != nil {
 		log.Fatalln("error writing csv:", err)

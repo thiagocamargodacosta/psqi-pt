@@ -30,8 +30,6 @@ const (
 	c8_column    string = "Componente 8 - Qualidade do sono - valor global"
 )
 
-var report_header [][]string = [][]string{{date_column, email_column, c1_column, c2_column, c3_column, c4_column, c5_column, c6_column, c7_column, c8_column}}
-
 func Print(r Report) {
 
 	fmt.Printf("%s:\t\t\t\t%s\n", date_column, r.Date)
