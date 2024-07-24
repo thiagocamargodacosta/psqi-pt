@@ -9,6 +9,7 @@ import (
 	"github.com/thiagocamargodacosta/psqi-pt/form"
 )
 
+// Stores the score for each component of the PSQI
 type Score struct {
 	Component1  int
 	Component2  int
@@ -20,7 +21,7 @@ type Score struct {
 	GlobalValue int
 }
 
-// Sleep quality global value
+// Returns the sleep quality score for a given form entry
 func SleepQualityScore(entry form.Entry) Score {
 
 	var s Score = Score{
@@ -40,6 +41,7 @@ func SleepQualityScore(entry form.Entry) Score {
 }
 
 // Component 1 - Subjective sleep quality
+// Returns the score for the answer given to the PSQI6 question
 func SubjectiveSleepQuality(entry form.Entry) int {
 	var score int
 
@@ -58,10 +60,13 @@ func SubjectiveSleepQuality(entry form.Entry) int {
 }
 
 // Component 2 - Sleep latency
+// Returns the score for the answers given to the PSQI2 and PSQI5a questions
 func SleepLatency(entry form.Entry) int {
 	var sum int
 	var score int
+
 	PSQI2, _ := strconv.Atoi(entry.PSQI2)
+
 	if PSQI2 <= 15 {
 		sum += 0
 	} else if PSQI2 <= 30 {
@@ -83,43 +88,41 @@ func SleepLatency(entry form.Entry) int {
 		sum += 3
 	}
 
-	switch sum {
-	case 0:
+	if sum == 0 {
 		score = 0
-	case 1:
+	} else if sum <= 2 {
 		score = 1
-	case 2:
-		score = 1
-	case 3:
+	} else if sum <= 4 {
 		score = 2
-	case 4:
-		score = 2
-	case 5:
-		score = 3
-	case 6:
+	} else {
 		score = 3
 	}
+
 	return score
 }
 
 // Component 3 - Sleep duration
+// Returns the score for the answer given to the PSQI4 question
 func SleepDuration(entry form.Entry) int {
 
+	var score int
 	PSQI4, _ := strconv.Atoi(entry.PSQI4)
 
 	if PSQI4 > 7 {
-		return 0
+		score = 0
 	} else if PSQI4 >= 6 {
-		return 1
+		score = 1
 	} else if PSQI4 >= 5 {
-		return 2
+		score = 2
 	} else { // entry.PSQI4 < 5
-		return 3
+		score = 3
 	}
 
+	return score
 }
 
 // Component 4 - Sleep efficiency
+// Returns the score for the answers given to the PSQI4, PSQI3, and PSQI1 questions
 func SleepEfficiency(entry form.Entry) int {
 
 	hoursSlept, _ := strconv.Atoi(entry.PSQI4)
@@ -158,120 +161,40 @@ func SleepEfficiency(entry form.Entry) int {
 
 	fmt.Printf("Sleep Efficiency:\t%s\t%s\tPSQI4 = %d\tPSQI3 = %s\tPSQI1 = %s\tHoursInBed = %s\tEfficiency = %.2f\n", entry.Date, entry.Email, hoursSlept, PSQI3, PSQI1, hoursInBed, efficiency)
 
+	var score int
+
 	if efficiency >= 85.0 {
-		return 0
+		score = 0
 	} else if efficiency >= 75.0 {
-		return 1
+		score = 1
 	} else if efficiency >= 65.0 {
-		return 2
+		score = 2
 	} else { // efficiency < 65
-		return 3
+		score = 3
 	}
+
+	return score
 }
 
 // Component 5 - Sleep disturbances
-
+// Returns the score for the answers given to the PSQI5b, ... , PSQI5j questions
 func SleepDisturbances(entry form.Entry) int {
 	var sum int
 	var score int
+	var answers []string = []string{entry.PSQI5b, entry.PSQI5c, entry.PSQI5d, entry.PSQI5e, entry.PSQI5f, entry.PSQI5g, entry.PSQI5h, entry.PSQI5i, entry.PSQI5j}
 
-	switch entry.PSQI5b {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
+	for _, answer := range answers {
 
-	switch entry.PSQI5c {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
-
-	switch entry.PSQI5d {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
-
-	switch entry.PSQI5e {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
-
-	switch entry.PSQI5f {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
-
-	switch entry.PSQI5g {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
-
-	switch entry.PSQI5h {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
-
-	switch entry.PSQI5i {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
-	}
-
-	switch entry.PSQI5j {
-	case "Nenhuma no último mês":
-		sum += 0
-	case "Menos de 1 vez/ semana":
-		sum += 1
-	case "1 ou 2 vezes/ semana":
-		sum += 2
-	case "3 ou mais vezes/ semana":
-		sum += 3
+		switch answer {
+		case "Nenhuma no último mês":
+			sum += 0
+		case "Menos de 1 vez/ semana":
+			sum += 1
+		case "1 ou 2 vezes/ semana":
+			sum += 2
+		case "3 ou mais vezes/ semana":
+			sum += 3
+		}
 	}
 
 	if sum == 0 {
@@ -288,6 +211,7 @@ func SleepDisturbances(entry form.Entry) int {
 }
 
 // Component 6 - Usage of sleep medication
+// Returns the score for the answer given to the PSQI7 question
 func SleepMedicationUsage(entry form.Entry) int {
 	var score int
 
@@ -306,6 +230,7 @@ func SleepMedicationUsage(entry form.Entry) int {
 }
 
 // Component 7 - Sleepness and disfunctions
+// Returns the score for the answers given to the PSQI8 and PSQI9 questions
 func SleepnessAndDisfunctions(entry form.Entry) int {
 	var sum int
 	var score int

@@ -1,7 +1,7 @@
 ## Pittsburgh sleep quality index (PSQI)
 
 This project provides an implementation for calculating the scoring
-based on the Pittsburgh PSQI sleep quality index
+based on the Pittsburgh Sleep Quality Index (PSQI)
 
 ### Requirements
 
@@ -20,4 +20,4 @@ go run main.go
 ```
 
 A csv file named `psqi-pt-scoring-results.csv` will be created and will contain the scoring results for each
-entry present in the input csv file
+entry present in the input csv file.

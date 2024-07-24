@@ -30,6 +30,7 @@ const (
 	c8_column    string = "Componente 8 - Qualidade do sono - valor global"
 )
 
+// Print can be used to print a given report r
 func Print(r Report) {
 
 	fmt.Printf("%s:\t\t\t\t%s\n", date_column, r.Date)

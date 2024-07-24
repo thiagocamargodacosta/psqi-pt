@@ -28,63 +28,63 @@ type Entry struct {
 // Extract each entry from the form responses table and return it as a slice
 func CreateFormEntry(data [][]string) []Entry {
 
-	var form []Entry
+	var forms []Entry
 
 	for i, line := range data {
 
 		if i > 0 { // Discard header row
 
-			var rec Entry
+			var e Entry
 
 			for j, field := range line {
 
 				switch j {
 				case 0:
-					rec.Date = field
+					e.Date = field
 				case 1:
-					rec.Email = field
+					e.Email = field
 				case 2:
-					rec.PSQI1 = field
+					e.PSQI1 = field
 				case 3:
-					rec.PSQI2 = field
+					e.PSQI2 = field
 				case 4:
-					rec.PSQI3 = field
+					e.PSQI3 = field
 				case 5:
-					rec.PSQI4 = field
+					e.PSQI4 = field
 				case 6:
-					rec.PSQI5a = field
+					e.PSQI5a = field
 				case 7:
-					rec.PSQI5b = field
+					e.PSQI5b = field
 				case 8:
-					rec.PSQI5c = field
+					e.PSQI5c = field
 				case 9:
-					rec.PSQI5d = field
+					e.PSQI5d = field
 				case 10:
-					rec.PSQI5e = field
+					e.PSQI5e = field
 				case 11:
-					rec.PSQI5f = field
+					e.PSQI5f = field
 				case 12:
-					rec.PSQI5g = field
+					e.PSQI5g = field
 				case 13:
-					rec.PSQI5h = field
+					e.PSQI5h = field
 				case 14:
-					rec.PSQI5i = field
+					e.PSQI5i = field
 				case 15:
-					rec.PSQI5j = field
+					e.PSQI5j = field
 				case 16:
-					rec.Reasons = field
+					e.Reasons = field
 				case 17:
-					rec.PSQI6 = field
+					e.PSQI6 = field
 				case 18:
-					rec.PSQI7 = field
+					e.PSQI7 = field
 				case 19:
-					rec.PSQI8 = field
+					e.PSQI8 = field
 				case 20:
-					rec.PSQI9 = field
+					e.PSQI9 = field
 				}
 			}
-			form = append(form, rec)
+			forms = append(forms, e)
 		}
 	}
-	return form
+	return forms
 }

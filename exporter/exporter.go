@@ -25,6 +25,7 @@ const (
 
 var header []string = []string{date_column, email_column, c1_column, c2_column, c3_column, c4_column, c5_column, c6_column, c7_column, c8_column}
 
+// Writes the scoring for each entry to outputFilename and returns any error that occurs during file creation
 func WriteOutputCSV(outputFilename string, reports []reporting.Report) error {
 
 	n := len(reports)
@@ -39,17 +40,21 @@ func WriteOutputCSV(outputFilename string, reports []reporting.Report) error {
 
 	if err != nil {
 		log.Fatalf("unable to create output file", err)
+		return err
 	}
+
 	defer file.Close()
 
 	w := csv.NewWriter(file)
 
 	if err = w.WriteAll(records); err != nil {
 		log.Fatalln(err)
+		return err
 	}
 
 	if err := w.Error(); err != nil {
 		log.Fatalln("error writing csv:", err)
+		return err
 	}
 
 	return nil
